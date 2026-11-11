@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self' blob: mediastream:;">
+  <title>EVL VideoSystem</title>
+  <link rel="stylesheet" href="../../node_modules/@fontsource/nunito/400.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/nunito/700.css">
+  <link rel="stylesheet" href="../../node_modules/@fontsource/nunito/800.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="on-home">
+  <div id="titlebar"><span class="brand"><b>EVL</b> VideoSystem</span></div>
+
+  <main id="home" class="screen active">
+    <div id="grid" data-i18n-aria="devices"></div>
+    <div id="home-msg" class="home-msg hidden">
+      <p id="home-msg-text"></p>
+      <button id="home-msg-action" class="pill pill-blue hidden"></button>
+    </div>
+  </main>
+
+  <footer id="dock">
+    <svg class="dock-shape" viewBox="0 0 1000 150" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="dockFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e7ebef"/>
+          <stop offset="1" stop-color="#cfd6dd"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,52 C170,52 250,14 500,14 C750,14 830,52 1000,52 L1000,150 L0,150 Z" fill="url(#dockFill)"/>
+      <path d="M0,52 C170,52 250,14 500,14 C750,14 830,52 1000,52" fill="none" stroke="#34b6ea" stroke-width="3" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <button id="btn-settings" class="round-btn" data-i18n-title="settings" data-i18n-aria="settings">
+      <svg viewBox="0 0 24 24"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.4 7.4 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6zM13 15.5A3.5 3.5 0 1 1 13 8.5a3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>
+    </button>
+    <div class="clock">
+      <div id="clock-time">--:--</div>
+      <div id="clock-date"></div>
+    </div>
+    <button id="btn-refresh" class="round-btn" data-i18n-title="refresh" data-i18n-aria="refresh">
+      <svg viewBox="0 0 24 24"><path d="M17.7 6.3A8 8 0 1 0 20 12h-2.2a5.8 5.8 0 1 1-1.7-4.1L13 11h7V4z"/></svg>
+    </button>
+  </footer>
+
+  <section id="viewer" class="screen">
+    <video id="screen" muted autoplay playsinline disablepictureinpicture></video>
+
+    <div id="status" class="status hidden">
+      <div class="status-card">
+        <div id="status-spinner" class="spinner"></div>
+        <p id="status-text"></p>
+        <button id="status-action" class="pill pill-blue hidden"></button>
+      </div>
+    </div>
+
+    <div id="hud-top" class="hud hud-top">
+      <span id="info-badge" class="badge"></span>
+    </div>
+
+    <div id="hud" class="hud hud-bottom">
+      <button id="btn-back" class="pill">
+        <svg viewBox="0 0 24 24"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg><span data-i18n="menu">Menu</span>
+      </button>
+      <div class="hud-center">
+        <div id="viewer-name"></div>
+        <div class="audio-row">
+          <button id="btn-mute" class="icon-btn" data-i18n-title="mute" data-i18n-aria="mute">
+            <svg id="ico-vol" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+            <svg id="ico-mute" viewBox="0 0 24 24" class="hidden"><path d="M4 9v6h4l5 4V5L8 9zm16.6 3 2.1-2.1-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4 2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4z"/></svg>
+          </button>
+          <input id="volume" type="range" min="0" max="150" step="1" value="100" data-i18n-aria="volume">
+          <span id="volume-val">100%</span>
+          <div class="vu" data-i18n-title="vuTitle"><div id="vu-bar"></div></div>
+          <span id="audio-name"></span>
+        </div>
+      </div>
+      <button id="btn-viewer-settings" class="pill">
+        <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2zm0-12v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><span data-i18n="adjust">Ajustes</span>
+      </button>
+      <button id="btn-fullscreen" class="pill pill-blue">
+        <svg viewBox="0 0 24 24"><path d="M5 5h5v2H7v3H5zm9 0h5v5h-2V7h-3zM5 14h2v3h3v2H5zm12 0h2v5h-5v-2h3z"/></svg><span id="fs-label">Tela cheia</span>
+      </button>
+    </div>
+  </section>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title" data-i18n="settings">Configurações</h2>
+
+      <div id="device-section" class="section">
+        <h3 id="device-section-title">Este dispositivo</h3>
+        <label class="row"><span data-i18n="cardAudio">Áudio da placa</span>
+          <select id="set-audio-in"></select>
+        </label>
+        <p class="hint" data-i18n="cardAudioHint"></p>
+      </div>
+
+      <div class="section">
+        <h3 data-i18n="video">Vídeo</h3>
+        <label class="row"><span data-i18n="resolution">Resolução</span>
+          <select id="set-res">
+            <option value="1080" data-i18n="resDefault">1920 × 1080 (padrão)</option>
+            <option value="monitor">Resolução do monitor</option>
+            <option value="720">1280 × 720</option>
+            <option value="1440">2560 × 1440</option>
+            <option value="2160">3840 × 2160 (4K)</option>
+          </select>
+        </label>
+        <label class="row"><span data-i18n="fps">Quadros por segundo</span>
+          <select id="set-fps">
+            <option value="60">60 fps</option>
+            <option value="30">30 fps</option>
+          </select>
+        </label>
+        <p class="hint" data-i18n="noStretchHint"></p>
+      </div>
+
+      <div class="section">
+        <h3 data-i18n="audio">Áudio</h3>
+        <label class="row"><span data-i18n="playOn">Tocar o áudio em</span>
+          <select id="set-audio-out"></select>
+        </label>
+      </div>
+
+      <div class="section">
+        <h3 data-i18n="general">Geral</h3>
+        <label class="row"><span data-i18n="language">Idioma</span>
+          <select id="set-lang">
+            <option value="auto" data-i18n="langAuto">Automático (do Windows)</option>
+            <option value="pt">Português</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="set-preview"> <span data-i18n="optPreview"></span></label>
+        <label class="check"><input type="checkbox" id="set-autoopen"> <span data-i18n="optAutoOpen"></span></label>
+        <label class="check"><input type="checkbox" id="set-sounds"> <span data-i18n="optSounds"></span></label>
+        <label class="check"><input type="checkbox" id="set-virtual"> <span><span data-i18n="optVirtual"></span> <small data-i18n="optVirtualHint"></small></span></label>
+      </div>
+
+      <div class="modal-actions">
+        <span id="version" class="version"></span>
+        <button id="modal-close" class="pill pill-blue" data-i18n="ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="devices.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "name": "evl-videosystem",
+  "productName": "EVL VideoSystem",
+  "version": "1.0.0",
+  "description": "EVL VideoSystem",
+  "main": "src/main.js",
+  "author": "EVL (https://evlcorp.lol)",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "start": "electron .",
+    "test": "node scripts/test-devices.js",
+    "dist": "electron-builder --win portable --x64",
+    "dist:installer": "electron-builder --win nsis --x64"
+  },
+  "dependencies": {
+    "@fontsource/nunito": "^5.3.0"
+  },
+  "devDependencies": {
+    "electron": "^45.2.2",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.evl.videosystem",
+    "productName": "EVL VideoSystem",
+    "copyright": "EVL",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "node_modules/@fontsource/nunito/**/*"
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "EVL VideoSystem",
+      "artifactName": "EVL-VideoSystem-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "EVL-VideoSystem-Portable-${version}.${ext}"
+    }
+  }
+}
