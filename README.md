@@ -55,6 +55,9 @@ npm run dist   # build the portable exe into dist\
 ```
 If `node_modules\electron\dist` is missing after `npm install`, run `node node_modules\electron\install.js` once.
 
+## 🤝 Contributing
+Pull requests are welcome! Bug fixes, translations and improvements are all appreciated. By submitting a contribution you agree to the contribution terms in section 4 of the [license](LICENSE): you grant EvlCorp a license to use it in the Software.
+
 ## 📄 License
 [EVL Software License 1.0](LICENSE): free for personal use and small businesses (up to 100 people). Third-party: Electron (MIT) and the Nunito font (OFL-1.1).
 

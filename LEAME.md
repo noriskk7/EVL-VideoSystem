@@ -55,6 +55,9 @@ npm run dist   # genera el exe portátil en dist\
 ```
 Si falta `node_modules\electron\dist` después de `npm install`, ejecuta una vez `node node_modules\electron\install.js`.
 
+## 🤝 Contribuir
+¡Los pull requests son bienvenidos! Correcciones, traducciones y mejoras se agradecen. Al enviar una contribución, aceptas los términos de contribución de la sección 4 de la [licencia](LICENSE): concedes a EvlCorp una licencia para usarla en el Software.
+
 ## 📄 Licencia
 [EVL Software License 1.0](LICENSE): gratis para uso personal y pequeñas empresas (hasta 100 personas). Terceros: Electron (MIT) y fuente Nunito (OFL-1.1).
 
