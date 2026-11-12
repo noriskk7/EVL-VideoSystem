@@ -8,5 +8,7 @@ contextBridge.exposeInMainWorld('evlNative', {
   keepAwake: (on) => ipcRenderer.invoke('keep-awake', on),
   openPrivacy: (which) => ipcRenderer.invoke('open-privacy', which),
   version: () => ipcRenderer.invoke('app:version'),
+  checkUpdate: () => ipcRenderer.invoke('update:check'),
+  openSite: () => ipcRenderer.invoke('open-site'),
   titlebarTheme: (theme) => ipcRenderer.invoke('titlebar:theme', theme),
 });

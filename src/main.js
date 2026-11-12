@@ -88,6 +88,9 @@ app.whenReady().then(() => {
 
   ipcMain.handle('app:version', () => app.getVersion());
 
+  ipcMain.handle('update:check', () => require('./updater').check());
+  ipcMain.handle('open-site', () => { shell.openExternal('https://evlcorp.lol/releases#evl-videosystem'); });
+
   ipcMain.handle('titlebar:theme', (_e, theme) => {
     if (!win) return;
     try {

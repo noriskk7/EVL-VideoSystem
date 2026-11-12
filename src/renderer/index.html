@@ -14,6 +14,11 @@
 
   <main id="home" class="screen active">
     <div id="grid" data-i18n-aria="devices"></div>
+    <div id="update-bar" class="update-bar hidden">
+      <span id="update-text"></span>
+      <button id="update-get" class="pill pill-blue"></button>
+      <button id="update-ignore" class="pill"></button>
+    </div>
     <div id="home-msg" class="home-msg hidden">
       <p id="home-msg-text"></p>
       <button id="home-msg-action" class="pill pill-blue hidden"></button>
@@ -136,6 +141,7 @@
         <label class="check"><input type="checkbox" id="set-preview"> <span data-i18n="optPreview"></span></label>
         <label class="check"><input type="checkbox" id="set-autoopen"> <span data-i18n="optAutoOpen"></span></label>
         <label class="check"><input type="checkbox" id="set-sounds"> <span data-i18n="optSounds"></span></label>
+        <label class="check"><input type="checkbox" id="set-update"> <span data-i18n="optUpdate"></span></label>
         <label class="check"><input type="checkbox" id="set-virtual"> <span><span data-i18n="optVirtual"></span> <small data-i18n="optVirtualHint"></small></span></label>
       </div>
 

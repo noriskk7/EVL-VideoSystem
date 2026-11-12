@@ -16,6 +16,7 @@
   const DEFAULTS = {
     res: '1080', fps: 60, audioOut: '', preview: true, showVirtual: false, sounds: true,
     autoOpen: false, volume: 100, muted: false, audioMap: {}, lastDevice: '', lang: 'auto',
+    updateCheck: true, updateLast: 0, updateLatest: '', updateIgnored: '',
   };
   let S = loadSettings();
   function loadSettings() {
@@ -522,6 +523,7 @@
     $('#set-autoopen').checked = S.autoOpen;
     $('#set-sounds').checked = S.sounds;
     $('#set-virtual').checked = S.showVirtual;
+    $('#set-update').checked = S.updateCheck;
     $('#modal').classList.remove('hidden');
     $('#modal-close').focus();
   }
@@ -540,6 +542,7 @@
     S.autoOpen = $('#set-autoopen').checked;
     S.sounds = $('#set-sounds').checked;
     S.showVirtual = $('#set-virtual').checked;
+    S.updateCheck = $('#set-update').checked;
     S.lang = $('#set-lang').value;
     if (screen === 'viewer' && cur.video) S.audioMap[cur.video.label] = $('#set-audio-in').value;
     saveSettings();
@@ -638,8 +641,38 @@
     } : null,
   });
 
+  let appVersion = '';
+  function isNewer(a, b) {
+    const x = String(a).split('.').map(Number);
+    const y = String(b).split('.').map(Number);
+    for (let i = 0; i < Math.max(x.length, y.length); i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+    return false;
+  }
+  function showUpdate() {
+    const v = S.updateLatest;
+    const show = S.updateCheck && v && S.updateIgnored !== v && appVersion && isNewer(v, appVersion);
+    $('#update-bar').classList.toggle('hidden', !show);
+    if (!show) return;
+    $('#update-text').textContent = t('updNew', { v });
+    $('#update-get').textContent = t('updGet');
+    $('#update-ignore').textContent = t('updIgnore');
+  }
+  async function checkUpdate() {
+    if (S.updateCheck && Date.now() - (S.updateLast || 0) >= 24 * 3600 * 1000) {
+      const r = await N.checkUpdate();
+      if (r && r.ok) {
+        S.updateLast = Date.now();
+        S.updateLatest = r.available ? r.latest : '';
+        saveSettings();
+      }
+    }
+    showUpdate();
+  }
+  $('#update-get').addEventListener('click', () => N.openSite());
+  $('#update-ignore').addEventListener('click', () => { S.updateIgnored = S.updateLatest; saveSettings(); showUpdate(); });
+
   (async () => {
-    N.version().then((v) => { if (v) $('#version').textContent = 'EVL VideoSystem v' + v; });
+    N.version().then((v) => { if (v) { $('#version').textContent = 'EVL VideoSystem v' + v; appVersion = v; checkUpdate(); } });
     applyVolume();
     await goHome();
     if (S.autoOpen && S.lastDevice) {
